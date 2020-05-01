@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Coin
   layers:
   - Default
   - TransparentFX
@@ -53,15 +54,24 @@ TagManager:
   - name: Platforms
     uniqueID: 1731547327
     locked: 0
+<<<<<<< Updated upstream
+=======
+  - name: Environment
+    uniqueID: 3853325281
+    locked: 0
+  - name: Collectables
+    uniqueID: 838921681
+    locked: 0
+>>>>>>> Stashed changes
   - name: Bullets
     uniqueID: 1669141667
     locked: 0
   - name: Enemies
     uniqueID: 2873931007
     locked: 0
-  - name: Player
-    uniqueID: 935407543
-    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Player
+    uniqueID: 935407543
     locked: 0
