@@ -3,108 +3,131 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Player controller and behavior
+/// Contrôleur du joueur
 /// </summary>
 public class PlayerScript : MonoBehaviour
 {
-    /// <summary>
-    /// 1 - The speed of the ship
-    /// </summary>
-    public Vector2 speed = new Vector2(50, 50);
+  /// <summary>
+  /// 1 - La vitesse de déplacement
+  /// </summary>
+  public Vector2 vitesse = new Vector2(80, 80);
+  public float vitesseMax = 25;
 
-    // 2 - Store the movement and the component
-    private Vector2 movement;
-    private Rigidbody2D rigidbodyComponent;
+  private float gravite;
 
-    void Update()
+  public float hauteurSaut = 60;
+  
+
+  // 2 - Stockage du mouvement
+  private Vector2 movement;
+  private bool estAuSol;
+  private bool saute;
+  private bool toucheSautEnfoncee;
+
+  private float distanceSol;
+
+ void Start()
+ {
+   distanceSol = GetComponent<BoxCollider2D>().bounds.extents.y;
+   estAuSol = false;
+   gravite = Physics2D.gravity.magnitude;
+ }
+
+  void Update()
+  {
+    // 3 - Récupérer les informations du clavier/manette
+    float inputX = Input.GetAxis("Horizontal");
+    float inputY = Input.GetAxis("Vertical");
+
+    
+
+    // 4 - Calcul du mouvement et de la direction du sprite
+    movement = new Vector2(vitesse.x * inputX, vitesse.y * inputY);
+
+    float scaleX = transform.localScale.x;
+    float scaleY = transform.localScale.y;
+    float scaleZ = transform.localScale.z;
+
+    estAuSol = estSol();
+
+    
+
+    if (inputX > 0)
     {
-        // 3 - Retrieve axis information
-        float inputX = Input.GetAxis("Horizontal");
-        float inputY = Input.GetAxis("Vertical");
-
-        // 4 - Movement per direction
-        movement = new Vector2(
-          speed.x * inputX,
-          speed.y * inputY);
-
-        // 5 - Shooting
-        bool shoot = Input.GetButtonDown("Fire1");
-        shoot |= Input.GetButtonDown("Fire2");
-        // Careful: For Mac users, ctrl + arrow is a bad idea
-
-        if (shoot)
-        {
-            WeaponScript weapon = GetComponent<WeaponScript>();
-            if (weapon != null)
-            {
-                // false because the player is not an enemy
-                weapon.Attack(false);
-                SoundEffectsHelper.Instance.MakePlayerShotSound();
-            }
-        }
-
-        // 6 - Make sure we are not outside the camera bounds
-        var dist = (transform.position - Camera.main.transform.position).z;
-
-        var leftBorder = Camera.main.ViewportToWorldPoint(
-          new Vector3(0, 0, dist)
-        ).x;
-
-        var rightBorder = Camera.main.ViewportToWorldPoint(
-          new Vector3(1, 0, dist)
-        ).x;
-
-        var topBorder = Camera.main.ViewportToWorldPoint(
-          new Vector3(0, 0, dist)
-        ).y;
-
-        var bottomBorder = Camera.main.ViewportToWorldPoint(
-          new Vector3(0, 1, dist)
-        ).y;
-
-        transform.position = new Vector3(
-          Mathf.Clamp(transform.position.x, leftBorder, rightBorder),
-          Mathf.Clamp(transform.position.y, topBorder, bottomBorder),
-          transform.position.z
-        );
+       transform.localScale = new Vector3(Mathf.Abs(scaleX),
+        scaleY, scaleZ);
+    }
+ 
+    else if (inputX < 0)
+    {
+       transform.localScale = new Vector3(-1f*Mathf.Abs(scaleX),
+        scaleY, scaleZ);
     }
 
-    void FixedUpdate()
+    if(Input.GetButtonDown("Jump"))
     {
-        // 6 - Get the component and store the reference
-        if (rigidbodyComponent == null) rigidbodyComponent = GetComponent<Rigidbody2D>();
-
-        // 7 - Move the game object
-        rigidbodyComponent.velocity = movement;
+      toucheSautEnfoncee = true;
+      if(estAuSol)
+      {
+        saute = true;
+        GetComponent<Rigidbody2D>().AddForce(Vector2.up * 1f * CalculSaut(gravite, hauteurSaut) * GetComponent<Rigidbody2D>().mass,
+         ForceMode2D.Impulse);
+      }
+    }
+    else if (Input.GetButtonUp("Jump"))
+    {
+      toucheSautEnfoncee = false;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+  }
+
+  void FixedUpdate()
+  {
+    // 5 - Déplacement
+    
+    GetComponent<Rigidbody2D>().AddForce(movement);
+    
+    if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) > vitesseMax
+    && Input.GetAxis("Horizontal")*GetComponent<Rigidbody2D>().velocity.x>0)
+    /*La 2ème condition permet de vérifier que la direction de l'input est identique
+    à la direction actuelle de déplacement. Cela évite une perte instantanée de la vélocité
+    accumulée si l'on change de direction alors que l'on est à vitesse maximale*/
+    
     {
-        bool damagePlayer = false;
 
-        // Collision with enemy
-        EnemyScript enemy = collision.gameObject.GetComponent<EnemyScript>();
-        if (enemy != null)
-        {
-            // Kill the enemy
-            HealthScript enemyHealth = enemy.GetComponent<HealthScript>();
-            if (enemyHealth != null) enemyHealth.Damage(enemyHealth.hp);
-
-            damagePlayer = true;
-        }
-
-        // Damage the player
-        if (damagePlayer)
-        {
-            HealthScript playerHealth = this.GetComponent<HealthScript>();
-            if (playerHealth != null) playerHealth.Damage(1);
-        }
+      Vector2 vect = GetComponent<Rigidbody2D>().velocity;
+      vect.x = Input.GetAxis("Horizontal")*vitesseMax;
+      GetComponent<Rigidbody2D>().velocity = vect;
     }
+  }
 
-    void OnDestroy()
+  void LateUpdate()
+  {
+    if(saute)
     {
-        // Game Over.
-        var gameOver = FindObjectOfType<GameOverScript>();
-        gameOver.ShowButtons();
+      if(!toucheSautEnfoncee && GetComponent<Rigidbody2D>().velocity.y>0)
+      {
+          GetComponent<Rigidbody2D>().AddForce(-1.5f * Vector2.up * CalculSaut(gravite, hauteurSaut) * GetComponent<Rigidbody2D>().mass);
+      }
+    }  
+
+    if (estAuSol && GetComponent<Rigidbody2D>().velocity.y<0)
+    {
+      Vector2 v = GetComponent<Rigidbody2D>().velocity;
+      v.y = 0;
+      GetComponent<Rigidbody2D>().velocity = v;
     }
+  }
+
+  public float CalculSaut(float gravite, float hauteur)
+  {
+    return Mathf.Sqrt(2 * gravite * hauteur);
+  }
+
+  public bool estSol()
+  {
+    return Physics2D.Raycast(transform.position, -1f*Vector2.up, distanceSol+0.1f);
+  }
+
+  
 }

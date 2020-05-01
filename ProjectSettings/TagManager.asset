@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Coin
   layers:
   - Default
   - TransparentFX
@@ -55,6 +56,9 @@ TagManager:
     locked: 0
   - name: Environment
     uniqueID: 3853325281
+    locked: 0
+  - name: Collectables
+    uniqueID: 3436909369
     locked: 0
   - name: Bullets
     uniqueID: 1669141667
