@@ -53,6 +53,9 @@ TagManager:
   - name: Platforms
     uniqueID: 1731547327
     locked: 0
+  - name: Environment
+    uniqueID: 3853325281
+    locked: 0
   - name: Bullets
     uniqueID: 1669141667
     locked: 0
