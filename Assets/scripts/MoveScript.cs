@@ -73,6 +73,9 @@ public class MoveScript : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position+new Vector3(Mathf.Sign(direction.x)*0.05f,0,0),
          -1f*Vector2.up, distanceSol+0.1f);
-        return !(hit && hit.transform.tag != "Player");
+        
+        RaycastHit2D hit2 = Physics2D.Raycast(transform.position,
+         -1f*Vector2.up, distanceSol+0.1f);
+        return !(hit && hit.transform.tag != "Player" && hit2.transform.tag != "Player");
     }
 }

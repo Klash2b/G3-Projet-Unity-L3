@@ -24,11 +24,14 @@ public class PlayerScript : MonoBehaviour
   private bool saute;
   private bool toucheSautEnfoncee;
 
-  private float distanceSol;
+
+  //Demi hauteur du boxcollider (distance entre le centre et le bas), nécessaire pour savoir si l'on peut sauter
+  //(on y ajoute un Epsilon pour savoir si l'on est en contact avec le sol, car les Raycasts partent du centre du collider)
+  private float demiHauteur;
 
  void Start()
  {
-   distanceSol = GetComponent<BoxCollider2D>().bounds.extents.y;
+   demiHauteur = GetComponent<BoxCollider2D>().bounds.extents.y;
    estAuSol = false;
    gravite = Physics2D.gravity.magnitude;
  }
@@ -63,6 +66,8 @@ public class PlayerScript : MonoBehaviour
        transform.localScale = new Vector3(-1f*Mathf.Abs(scaleX),
         scaleY, scaleZ);
     }
+
+    //Gestion des sauts
 
     if(Input.GetButtonDown("Jump"))
     {
@@ -101,7 +106,7 @@ public class PlayerScript : MonoBehaviour
     }
   }
 
-  void LateUpdate()
+  void LateUpdate() //Saut en LateUpdate pour des raisons de problèmes de performance avec FixedUpdate
   {
     if(saute)
     {
@@ -126,7 +131,7 @@ public class PlayerScript : MonoBehaviour
 
   public bool estSol()
   {
-    return Physics2D.Raycast(transform.position, -1f*Vector2.up, distanceSol+0.1f);
+    return Physics2D.Raycast(transform.position, -1f*Vector2.up, demiHauteur+0.1f);
   }
 
   
