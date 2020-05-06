@@ -8,6 +8,8 @@ TagManager:
   - FallingEnemy
   - PowerUp
   - Spike
+  - MovingPlatform
+  - Platform
   layers:
   - Default
   - TransparentFX

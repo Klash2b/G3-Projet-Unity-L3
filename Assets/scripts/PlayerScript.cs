@@ -29,6 +29,8 @@ public class PlayerScript : MonoBehaviour
   //(on y ajoute un Epsilon pour savoir si l'on est en contact avec le sol, car les Raycasts partent du centre du collider)
   private float demiHauteur;
 
+    public GameObject Player;
+
  void Start()
  {
    demiHauteur = GetComponent<BoxCollider2D>().bounds.extents.y;
@@ -36,7 +38,23 @@ public class PlayerScript : MonoBehaviour
    gravite = Physics2D.gravity.magnitude;
  }
 
-  void Update()
+    public void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("MovingPlatform"))
+        {
+            Player.transform.parent = other.gameObject.transform;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("MovingPlatform"))
+        {
+            Player.transform.parent = null;
+        }
+    }
+
+    void Update()
   {
     // 3 - Récupérer les informations du clavier/manette
     float inputX = Input.GetAxis("Horizontal");
@@ -133,6 +151,8 @@ public class PlayerScript : MonoBehaviour
   {
     return Physics2D.Raycast(transform.position, -1f*Vector2.up, demiHauteur+0.1f);
   }
+
+    
 
   
 }
