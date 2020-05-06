@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Coin
   - FallingEnemy
+  - PowerUp
+  - Spike
   layers:
   - Default
   - TransparentFX

@@ -33,7 +33,7 @@ public class HealthScript : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.tag == "FallingEnemy")
+        if (col.gameObject.tag == "FallingEnemy" || col.gameObject.tag == "Spike")
         {
             damage(hp);
         }
