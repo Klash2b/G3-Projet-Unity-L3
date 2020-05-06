@@ -33,6 +33,7 @@ public class PlayerScript : MonoBehaviour
 
  void Start()
  {
+   gameObject.GetComponent<PlayerScript2>().enabled = false;
    demiHauteur = GetComponent<BoxCollider2D>().bounds.extents.y;
    estAuSol = false;
    gravite = Physics2D.gravity.magnitude;

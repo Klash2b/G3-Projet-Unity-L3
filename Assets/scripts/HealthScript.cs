@@ -26,6 +26,7 @@ public class HealthScript : MonoBehaviour
 
         if (hp <= 0)
         {
+            hp = 0;
             // Dead!
             Destroy(gameObject);
         }

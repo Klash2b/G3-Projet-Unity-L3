@@ -6534,6 +6534,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 2014319978}
   texte: {fileID: 171523853}
+--- !u!114 &2014319984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014319975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb1325b17dbda6e4ba08587f1f09863e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vitesse: {x: 80, y: 80}
+  vitesseMax: 25
+  hauteurSaut: 60
+  Player: {fileID: 2014319975}
 --- !u!1001 &2015647629
 PrefabInstance:
   m_ObjectHideFlags: 0

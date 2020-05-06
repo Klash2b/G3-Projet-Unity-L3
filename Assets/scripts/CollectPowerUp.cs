@@ -11,6 +11,8 @@ public class CollectPowerUp : MonoBehaviour
         if (otherCollider.tag == "PowerUp")
         {
             Destroy(otherCollider.gameObject);
+            gameObject.GetComponent<PlayerScript>().enabled = false;
+            gameObject.GetComponent<PlayerScript2>().enabled = true;
         }
     }
 }
