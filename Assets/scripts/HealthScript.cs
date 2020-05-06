@@ -37,5 +37,13 @@ public class HealthScript : MonoBehaviour
         {
             damage(hp);
         }
+        if (col.gameObject.tag == "Goomba")
+        {
+            damage(2);
+            Vector2 knockBack = col.gameObject.GetComponent<Rigidbody2D>().velocity;
+            GetComponent<Rigidbody2D>().velocity = -2f*knockBack;
+            GetComponent<Rigidbody2D>().AddForce(-1f*knockBack);
+            Destroy(col.gameObject);
+        }
     }
 }

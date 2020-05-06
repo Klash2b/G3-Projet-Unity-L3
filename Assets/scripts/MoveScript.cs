@@ -22,7 +22,8 @@ public class MoveScript : MonoBehaviour
     private Vector2 movement;
     private Rigidbody2D rigidbodyComponent;
 
-    private float distanceSol;
+    private float demiHauteur;
+    private float demiLargeur;
 
     void Update()
     {
@@ -30,7 +31,8 @@ public class MoveScript : MonoBehaviour
         movement = new Vector2(
           speed.x * direction.x,
           speed.y * direction.y);
-        distanceSol = GetComponent<BoxCollider2D>().bounds.extents.y;
+        demiHauteur = GetComponent<BoxCollider2D>().bounds.extents.y;
+        demiLargeur = GetComponent<BoxCollider2D>().bounds.extents.x;
     }
 
     void FixedUpdate()
@@ -71,11 +73,21 @@ public class MoveScript : MonoBehaviour
 
     public bool finPlateforme()
     {
+        bool b = true;
         RaycastHit2D hit = Physics2D.Raycast(transform.position+new Vector3(Mathf.Sign(direction.x)*0.05f,0,0),
-         -1f*Vector2.up, distanceSol+0.1f);
+         -1f*Vector2.up, demiHauteur+0.1f);
         
         RaycastHit2D hit2 = Physics2D.Raycast(transform.position,
-         -1f*Vector2.up, distanceSol+0.1f);
-        return !(hit && hit.transform.tag != "Player" && hit2.transform.tag != "Player");
+         -1f*Vector2.up, demiHauteur+0.1f);
+
+        RaycastHit2D testMur = Physics2D.Raycast(transform.position,
+         Mathf.Sign(direction.x)*Vector2.right, demiLargeur+0.05f);
+
+        if (testMur)
+        {
+            b = testMur.transform.tag != "Wall";
+        }
+
+        return !(hit && hit.transform.tag != "Player" && hit2.transform.tag != "Player" && b);
     }
 }

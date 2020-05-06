@@ -10,6 +10,8 @@ TagManager:
   - Spike
   - MovingPlatform
   - Platform
+  - Wall
+  - Goomba
   layers:
   - Default
   - TransparentFX

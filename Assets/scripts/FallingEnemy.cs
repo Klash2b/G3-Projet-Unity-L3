@@ -12,9 +12,9 @@ public class FallingEnemy : MonoBehaviour
     private BoxCollider2D box;
     private Rigidbody2D rigidbodyComponent;
 
-    public float startingY;
+    private float startingY;
 
-    public float pos;
+    private float pos;
 
     //Demi hauteur du boxcollider (distance entre le centre et le bas), nécessaire pour savoir si l'on peut sauter
     //(on y ajoute un Epsilon pour savoir si l'on est en contact avec le sol, car les Raycasts partent du centre du collider)

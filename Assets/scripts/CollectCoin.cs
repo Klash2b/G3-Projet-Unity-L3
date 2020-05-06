@@ -5,18 +5,22 @@ using UnityEngine.UI;
 
 public class CollectCoin : MonoBehaviour
 {
-    public static int collected = 0;
     public Text txt;
+
+    void Start()
+    {
+        txt.text = "Pièces : " + Collected.collected.ToString();
+    }
 
     void OnTriggerEnter2D (Collider2D otherCollider)
     {
         if (otherCollider.tag == "Coin")
         {
-            collected++;
+            Collected.collected++;
             Destroy(otherCollider.gameObject);
         }
 
-        txt.text = "Pièces : " + collected.ToString();
+        txt.text = "Pièces : " + Collected.collected.ToString();
     }
 }
 
