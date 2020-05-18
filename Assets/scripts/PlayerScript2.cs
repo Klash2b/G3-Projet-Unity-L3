@@ -108,7 +108,8 @@ public class PlayerScript2 : MonoBehaviour
             {
                 doubleSaut = false;
                 saute = true;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
+                Vector2 vect = new Vector2 (GetComponent<Rigidbody2D>().velocity.x, 0);
+                GetComponent<Rigidbody2D>().velocity = vect;
                 GetComponent<Rigidbody2D>().AddForce(Vector2.up * 1f * CalculSaut(gravite, hauteurSaut) * GetComponent<Rigidbody2D>().mass,
                 ForceMode2D.Impulse);
             }
@@ -178,6 +179,4 @@ public class PlayerScript2 : MonoBehaviour
   {
     return Physics2D.Raycast(transform.position, -1f*Vector2.up, demiHauteur+0.001f);
   }
-
-  
 }
