@@ -11,6 +11,7 @@ public class HealthScript : MonoBehaviour
     /// Total hitpoints
     /// </summary>
     public int hp = 5;
+    private int shotDamage = 1;
 
     /// <summary>
     /// Enemy or player?
@@ -50,18 +51,23 @@ public class HealthScript : MonoBehaviour
                 GetComponent<Rigidbody2D>().AddForce(-1f*knockBack);
                 Destroy(col.gameObject);
             }
+            if(col.gameObject.tag == "Shot")
+            {
+                damage(shotDamage);
+                Destroy(col.gameObject);
+            }
         }
-        
     }
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (gameObject.tag == "Goomba")
+        if (gameObject.tag == "Goomba" || gameObject.tag == "FlyingEnemy")
         {
             if (col.gameObject.tag == "Weapon")
             {
                 damage(1);
             }
         }
+        
     }
 }
