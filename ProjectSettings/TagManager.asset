@@ -12,6 +12,7 @@ TagManager:
   - Platform
   - Wall
   - Goomba
+  - Weapon
   layers:
   - Default
   - TransparentFX

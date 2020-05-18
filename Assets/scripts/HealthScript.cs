@@ -34,17 +34,34 @@ public class HealthScript : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
+        
         if (col.gameObject.tag == "FallingEnemy" || col.gameObject.tag == "Spike")
         {
             damage(hp);
         }
-        if (col.gameObject.tag == "Goomba")
+
+        if (gameObject.tag == "Player")
         {
-            damage(2);
-            Vector2 knockBack = col.gameObject.GetComponent<Rigidbody2D>().velocity;
-            GetComponent<Rigidbody2D>().velocity = -2f*knockBack;
-            GetComponent<Rigidbody2D>().AddForce(-1f*knockBack);
-            Destroy(col.gameObject);
+            if (col.gameObject.tag == "Goomba")
+            {
+                damage(2);
+                Vector2 knockBack = col.gameObject.GetComponent<Rigidbody2D>().velocity;
+                GetComponent<Rigidbody2D>().velocity = -2f*knockBack;
+                GetComponent<Rigidbody2D>().AddForce(-1f*knockBack);
+                Destroy(col.gameObject);
+            }
+        }
+        
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (gameObject.tag == "Goomba")
+        {
+            if (col.gameObject.tag == "Weapon")
+            {
+                damage(1);
+            }
         }
     }
 }
