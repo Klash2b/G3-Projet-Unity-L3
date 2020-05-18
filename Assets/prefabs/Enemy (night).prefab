@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8939750878794089754}
   - component: {fileID: -8849972717938942510}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy (night)
   m_TagString: Goomba
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: -1421036289
   m_SortingLayer: -2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c1684cdddbaf44b49bf87f8176a3d982, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1990d2380a1afa14694ada09ed03a61d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -157,7 +157,7 @@ Animator:
   m_GameObject: {fileID: 5357368099499894252}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0a03d7eee7aff07488e7f56b1084b2fa, type: 2}
+  m_Controller: {fileID: 9100000, guid: 18aacf2b4c45e6f41a4e23a37803cce2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
