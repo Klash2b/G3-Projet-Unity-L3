@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5357368099499894162}
   - component: {fileID: 5193906115919640657}
   - component: {fileID: 8939750878794089754}
+  - component: {fileID: -8849972717938942510}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Goomba
@@ -74,12 +75,12 @@ SpriteRenderer:
   m_SortingLayerID: -1421036289
   m_SortingLayer: -2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 9b427c500c903c944adb1c596dace478, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c1684cdddbaf44b49bf87f8176a3d982, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.56, y: 2.56}
+  m_Size: {x: 9, y: 9}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -103,7 +104,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 9, y: 9}
-    newSize: {x: 2.56, y: 2.56}
+    newSize: {x: 9, y: 9}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -165,3 +166,16 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-8849972717938942510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5357368099499894252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e72619f209c0e8a4cb61934e5ef1a21e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 1
