@@ -25,6 +25,9 @@ public class PlayerScript2 : MonoBehaviour
   private bool toucheSautEnfoncee;
   private bool doubleSaut = false;
   public Animator anim;
+  private float scaleX;
+  private float scaleY;
+  private float scaleZ;
 
 
   //Demi hauteur du boxcollider (distance entre le centre et le bas), nécessaire pour savoir si l'on peut sauter
@@ -36,6 +39,9 @@ public class PlayerScript2 : MonoBehaviour
    demiHauteur = GetComponent<BoxCollider2D>().bounds.extents.y;
    estAuSol = false;
    gravite = Physics2D.gravity.magnitude;
+   scaleX = transform.localScale.x;
+   scaleY = transform.localScale.y;
+   scaleZ = transform.localScale.z;
  }
 
   void Update()
@@ -49,9 +55,7 @@ public class PlayerScript2 : MonoBehaviour
     // 4 - Calcul du mouvement et de la direction du sprite
     movement = new Vector2(vitesse.x * inputX, vitesse.y * inputY);
 
-    float scaleX = transform.localScale.x;
-    float scaleY = transform.localScale.y;
-    float scaleZ = transform.localScale.z;
+    
 
     estAuSol = estSol();
 
@@ -104,7 +108,8 @@ public class PlayerScript2 : MonoBehaviour
             {
                 doubleSaut = false;
                 saute = true;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
+                Vector2 vect = new Vector2 (GetComponent<Rigidbody2D>().velocity.x, 0);
+                GetComponent<Rigidbody2D>().velocity = vect;
                 GetComponent<Rigidbody2D>().AddForce(Vector2.up * 1f * CalculSaut(gravite, hauteurSaut) * GetComponent<Rigidbody2D>().mass,
                 ForceMode2D.Impulse);
             }
@@ -174,6 +179,4 @@ public class PlayerScript2 : MonoBehaviour
   {
     return Physics2D.Raycast(transform.position, -1f*Vector2.up, demiHauteur+0.001f);
   }
-
-  
 }

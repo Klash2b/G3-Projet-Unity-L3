@@ -13,6 +13,8 @@ TagManager:
   - Wall
   - Goomba
   - Weapon
+  - FlyingEnemy
+  - Shot
   layers:
   - Default
   - TransparentFX
@@ -22,8 +24,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - FlyingEnemy
+  - Shot
   - 
   - 
   - 

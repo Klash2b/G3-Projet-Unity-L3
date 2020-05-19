@@ -11,6 +11,8 @@ public class WeaponScript : MonoBehaviour
     // 1 - Designer variables
     //--------------------------------
 
+    public float speed = 55f;
+
     /// <summary>
     /// Projectile prefab for shooting
     /// </summary>
@@ -19,17 +21,17 @@ public class WeaponScript : MonoBehaviour
     /// <summary>
     /// Cooldown in seconds between two shots
     /// </summary>
-    public float shootingRate = 0.25f;
+    public float shootingRate = 3.5f;
 
     //--------------------------------
     // 2 - Cooldown
     //--------------------------------
 
-    private float shootCooldown;
+    public float shootCooldown;
 
     void Start()
     {
-        shootCooldown = 0f;
+        shootCooldown = 3.5f;
     }
 
     void Update()
@@ -47,10 +49,11 @@ public class WeaponScript : MonoBehaviour
     /// <summary>
     /// Create a new projectile if possible
     /// </summary>
-    public void Attack(bool isEnemy)
+    public void Attack(Vector3 direction)
     {
         if (CanAttack)
         {
+            float angle;
             shootCooldown = shootingRate;
 
             // Create a new shot
@@ -59,19 +62,11 @@ public class WeaponScript : MonoBehaviour
             // Assign position
             shotTransform.position = transform.position;
 
-            // The is enemy property
-            ShotScript shot = shotTransform.gameObject.GetComponent<ShotScript>();
-            if (shot != null)
-            {
-                shot.isEnemyShot = isEnemy;
-            }
+            shotTransform.GetComponent<Rigidbody2D>().velocity = direction.normalized * speed;
+            angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            shotTransform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
             // Make the weapon shot always towards it
-            MoveScript move = shotTransform.gameObject.GetComponent<MoveScript>();
-            if (move != null)
-            {
-                move.direction = this.transform.right; // towards in 2D space is the right of the sprite
-            }
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class AttackScript : MonoBehaviour
@@ -8,11 +9,15 @@ public class AttackScript : MonoBehaviour
 
     private float tempsRecharge = 0f;
     private float tempsAttaque = 0f;
+
+    private float dureeAttaque;
     public Animator anim;
     // Start is called before the first frame update
     void Start()
     {
         playerWeapon.gameObject.SetActive(false);
+        AnimationClip animAttaque = Array.Find(anim.runtimeAnimatorController.animationClips, clip => clip.name == "attack");
+        dureeAttaque = animAttaque.length;
     }
 
     // Update is called once per frame
@@ -28,8 +33,8 @@ public class AttackScript : MonoBehaviour
     {
       if (attaque)
       {
-          tempsRecharge = 1.5f;
-          tempsAttaque = 1.0f;
+          tempsRecharge = dureeAttaque + 0.5f;
+          tempsAttaque = dureeAttaque;
           anim.SetBool("isAttacking", true);
           playerWeapon.gameObject.SetActive(true);
       }
@@ -37,7 +42,6 @@ public class AttackScript : MonoBehaviour
     
     else if (tempsRecharge > 0)
     {
-      anim.SetBool("isAttacking", false);
       anim.SetFloat("reloadTime", tempsRecharge);
       tempsRecharge -= Time.deltaTime;
       tempsAttaque -= Time.deltaTime;
@@ -45,6 +49,7 @@ public class AttackScript : MonoBehaviour
 
     if (tempsAttaque <= 0)
     {
+        anim.SetBool("isAttacking", false);
         playerWeapon.gameObject.SetActive(false);
     }
 

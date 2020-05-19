@@ -7,21 +7,20 @@ using UnityEngine;
 /// </summary>
 public class ShotScript : MonoBehaviour
 {
-    // 1 - Designer variables
-
-    /// <summary>
-    /// Damage inflicted
-    /// </summary>
-    public int damage = 1;
-
-    /// <summary>
-    /// Projectile damage player or enemies?
-    /// </summary>
-    public bool isEnemyShot = false;
-
     void Start()
     {
+        Physics2D.IgnoreLayerCollision(8,9);
         // 2 - Limited time to live to avoid any leak
-        Destroy(gameObject, 20); // 20sec
+        Destroy(gameObject, 10); // 10sec
     }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if(col.gameObject.tag != "Player" && col.gameObject.tag != "FlyingEnemy")
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
 }

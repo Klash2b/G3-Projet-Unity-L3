@@ -88,6 +88,6 @@ public class MoveScript : MonoBehaviour
             b = testMur.transform.tag != "Wall";
         }
 
-        return !(hit && hit.transform.tag != "Player" && hit2.transform.tag != "Player" && b);
+        return !(hit && hit.transform.tag != "Player" && hit2 && hit2.transform.tag != "Player" && b);
     }
 }
