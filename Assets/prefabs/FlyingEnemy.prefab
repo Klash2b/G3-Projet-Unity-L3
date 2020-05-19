@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6464299203479632370}
   - component: {fileID: 6464299203479632368}
   - component: {fileID: 7800072725133564190}
+  - component: {fileID: -99038696122158208}
   m_Layer: 8
   m_Name: FlyingEnemy
   m_TagString: FlyingEnemy
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 935407543
   m_SortingLayer: -1
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: ffb77af4639defd4687044de0497fba5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 036df5c045b10e0458a01f3454631b5f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -103,7 +104,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 6.79, y: 6.79}
+    oldSize: {x: 9, y: 9}
     newSize: {x: 9, y: 9}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -178,3 +179,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 2
+  anim: {fileID: -99038696122158208}
+--- !u!95 &-99038696122158208
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6464299203479632366}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c34c9a3913283fd4a9d8fc9125609f64, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

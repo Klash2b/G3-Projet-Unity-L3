@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 5
+  anim: {fileID: 8841374247179130860}
 --- !u!114 &8841374247179130868
 MonoBehaviour:
   m_ObjectHideFlags: 0

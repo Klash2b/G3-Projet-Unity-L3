@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -13,6 +14,9 @@ public class HealthScript : MonoBehaviour
     public int hp = 5;
     private int shotDamage = 1;
     private bool isRespawning;
+    private float dieTime;
+
+    public Animator anim;
 
     /// <summary>
     /// Enemy or player?
@@ -22,6 +26,12 @@ public class HealthScript : MonoBehaviour
     /// Inflicts damage and check if the object should be destroyed
     /// </summary>
     /// <param name="damageCount"></param>
+    void Start()
+    {
+       AnimationClip death = Array.Find(anim.runtimeAnimatorController.animationClips,
+       clip => clip.name == "die" || clip.name == "gDie" || clip.name == "fDie");
+       dieTime = death.length;
+    }
     public void damage(int damageCount)
     {
         hp -= damageCount;
@@ -37,7 +47,6 @@ public class HealthScript : MonoBehaviour
             //On vérifie aussi que le joueur n'est pas en attente de réapparition
             {
                 transform.gameObject.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
-                gameObject.GetComponent<Renderer>().enabled = false;
                 isRespawning = true;
 
                 /*On ne sait pas quel script de mouvement est actuellement activé, donc on 
@@ -59,7 +68,8 @@ public class HealthScript : MonoBehaviour
                 // Dead!
                 if (!(gameObject.tag == "Player" && isRespawning))
                 {
-                    Destroy(gameObject);
+                    anim.SetBool("isDying", true);
+                    Destroy(gameObject, dieTime);
                 }   
             }
             
@@ -78,11 +88,19 @@ public class HealthScript : MonoBehaviour
         {
             if (col.gameObject.tag == "Goomba" || col.gameObject.tag == "FlyingEnemy")
             {
-                damage(2);
-                Vector2 knockBack = col.gameObject.GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = -2f*knockBack;
-                GetComponent<Rigidbody2D>().AddForce(-1f*knockBack);
-                Destroy(col.gameObject);
+                if (!col.gameObject.GetComponent<Animator>().GetBool("isDying"))
+                {
+                    damage(2);
+                    Vector2 knockBack = col.gameObject.GetComponent<Rigidbody2D>().velocity;
+                    if (col.gameObject.tag == "FlyingEnemy")
+                    {
+                        knockBack = 0.5f*knockBack;
+                    }
+                    GetComponent<Rigidbody2D>().velocity = -2f*knockBack;
+                    GetComponent<Rigidbody2D>().AddForce(-1f*knockBack);
+                    col.gameObject.GetComponent<HealthScript>().damage(col.gameObject.GetComponent<HealthScript>().hp);
+                }
+                
             }
             if(col.gameObject.tag == "Shot")
             {
@@ -106,7 +124,11 @@ public class HealthScript : MonoBehaviour
 
     private IEnumerator Respawn(MonoBehaviour p)
     {
-        yield return new WaitForSeconds(2);
+        anim.SetBool("isDying", true);
+        yield return new WaitForSeconds(dieTime);
+        gameObject.GetComponent<Renderer>().enabled = false;
+        anim.SetBool("isDying", false);
+        yield return new WaitForSeconds(1.5f);
         hp = 5;
         gameObject.GetComponent<Renderer>().enabled = true;
         p.enabled = true;
