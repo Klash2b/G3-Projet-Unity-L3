@@ -10,7 +10,7 @@ public class ShowHpScript : MonoBehaviour
 
     void OnCollisionEnter2D (Collision2D col)
     {
-        texte.text = "HP = " + player.hp;
+        texte.text = "HP : " + player.hp;
     }
 
 }

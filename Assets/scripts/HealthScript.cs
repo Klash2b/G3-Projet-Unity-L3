@@ -79,7 +79,7 @@ public class HealthScript : MonoBehaviour
     void OnCollisionEnter2D(Collision2D col)
     {
         
-        if (col.gameObject.tag == "FallingEnemy" || col.gameObject.tag == "Spike")
+        if (col.gameObject.tag == "FallingEnemy" || col.gameObject.tag == "Spike" || col.gameObject.tag == "InvisWall")
         {
             damage(hp);
         }
@@ -126,14 +126,20 @@ public class HealthScript : MonoBehaviour
     {
         anim.SetBool("isDying", true);
         yield return new WaitForSeconds(dieTime);
+        // Récupération du script RespawnCanvasScript
+        var RespawnCanvas = FindObjectOfType<RespawnCanvasScript>();
+        // Affichage du Canvas "Réapparition dans 1.5s"
+        RespawnCanvas.EnableText();
+
         gameObject.GetComponent<Renderer>().enabled = false;
         anim.SetBool("isDying", false);
         yield return new WaitForSeconds(1.5f);
+        // Effacement du Texte "Réapparition dans 1.5s"
+        RespawnCanvas.DisableText();
         hp = 5;
         gameObject.GetComponent<Renderer>().enabled = true;
         p.enabled = true;
         isRespawning = false;
         transform.position = LastCheckpoint.getLastCheckpoint();
-        
     }
 }

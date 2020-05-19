@@ -9,7 +9,7 @@ public class CollectCoin : MonoBehaviour
 
     void Start()
     {
-        txt.text = "Pièces : " + Collected.collected.ToString();
+        txt.text = "PIECES : " + Collected.collected.ToString();
     }
 
     void OnTriggerEnter2D (Collider2D otherCollider)
@@ -20,7 +20,7 @@ public class CollectCoin : MonoBehaviour
             Destroy(otherCollider.gameObject);
         }
 
-        txt.text = "Pièces : " + Collected.collected.ToString();
+        txt.text = "PIECES : " + Collected.collected.ToString();
     }
 }
 
