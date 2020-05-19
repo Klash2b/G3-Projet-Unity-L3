@@ -29,7 +29,7 @@ public class HealthScript : MonoBehaviour
     void Start()
     {
        AnimationClip death = Array.Find(anim.runtimeAnimatorController.animationClips,
-       clip => clip.name == "die" || clip.name == "gDie" || clip.name == "fDie");
+       clip => clip.name == "die" || clip.name == "gDie" || clip.name == "fDie" || clip.name == "fDieNight" || clip.name == "gDieNight");
        dieTime = death.length;
     }
     public void damage(int damageCount)
