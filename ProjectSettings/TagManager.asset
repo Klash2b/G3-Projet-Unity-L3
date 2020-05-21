@@ -16,6 +16,9 @@ TagManager:
   - FlyingEnemy
   - Shot
   - GameOverPanel
+  - CheckpointEasy
+  - CheckpointNormal
+  - NextLevel
   layers:
   - Default
   - TransparentFX

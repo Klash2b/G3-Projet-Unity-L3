@@ -6,9 +6,13 @@ public class NextLevel : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D col)
     {
-        if(col.tag == "Finish")
+        if(col.tag == "NextLevel")
         {
             Application.LoadLevel("Level2");
+        }
+        if(col.tag == "Finish")
+        {
+            Application.LoadLevel("Menu");
         }
     }
 }
