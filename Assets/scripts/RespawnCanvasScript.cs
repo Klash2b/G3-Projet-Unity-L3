@@ -5,12 +5,19 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Start or quit the game
+/// Annonce de réapparition
 /// </summary>
 public class RespawnCanvasScript : MonoBehaviour
 {
     // Texte de réapparition
     public Text myText;
+
+    void Awake()
+    {
+        // Désactive le texte par défaut
+        DisableText();
+    }
+
 
     public void EnableText()
     {

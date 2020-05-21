@@ -15,6 +15,7 @@ TagManager:
   - Weapon
   - FlyingEnemy
   - Shot
+  - GameOverPanel
   layers:
   - Default
   - TransparentFX

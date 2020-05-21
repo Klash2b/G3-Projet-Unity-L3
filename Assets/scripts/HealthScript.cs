@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
@@ -70,7 +70,7 @@ public class HealthScript : MonoBehaviour
                 {
                     anim.SetBool("isDying", true);
                     Destroy(gameObject, dieTime);
-                }   
+                }
             }
             
         }
@@ -110,6 +110,17 @@ public class HealthScript : MonoBehaviour
         }
     }
 
+    void OnDestroy()
+    {
+        if (gameObject.tag == "Player"){
+            // Récupération du script GameOverScript
+            var GameOverCanvas = FindObjectOfType<GameOverScript>();
+            // Affichage des boutons et du texte de Game Over
+            GameOverCanvas.EnableText();
+            GameOverCanvas.ShowButtons();
+        }
+    }
+
     void OnTriggerEnter2D(Collider2D col)
     {
         if (gameObject.tag == "Goomba" || gameObject.tag == "FlyingEnemy")
@@ -124,18 +135,20 @@ public class HealthScript : MonoBehaviour
 
     private IEnumerator Respawn(MonoBehaviour p)
     {
-        anim.SetBool("isDying", true);
-        yield return new WaitForSeconds(dieTime);
         // Récupération du script RespawnCanvasScript
         var RespawnCanvas = FindObjectOfType<RespawnCanvasScript>();
         // Affichage du Canvas "Réapparition dans 1.5s"
         RespawnCanvas.EnableText();
 
+        anim.SetBool("isDying", true);
+        yield return new WaitForSeconds(dieTime);
         gameObject.GetComponent<Renderer>().enabled = false;
         anim.SetBool("isDying", false);
         yield return new WaitForSeconds(1.5f);
+
         // Effacement du Texte "Réapparition dans 1.5s"
         RespawnCanvas.DisableText();
+
         hp = 5;
         gameObject.GetComponent<Renderer>().enabled = true;
         p.enabled = true;
