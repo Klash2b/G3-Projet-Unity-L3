@@ -6,6 +6,22 @@ public class LastCheckpoint : MonoBehaviour
 {
     private static Vector3 checkpoint = new Vector3(-Mathf.Infinity, -Mathf.Infinity, -Mathf.Infinity);
 
+    void Start()
+    {
+        if (gameObject.tag == "CheckpointEasy" 
+        && MenuScript.getDifficulty() != "easy")
+        
+        {
+            gameObject.SetActive(false);
+        }
+
+        if (gameObject.tag == "CheckpointNormal" 
+        && MenuScript.getDifficulty() == "hard")
+        
+        {
+            gameObject.SetActive(false);
+        }
+    }
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.tag=="Player")
