@@ -19,6 +19,7 @@ TagManager:
   - CheckpointEasy
   - CheckpointNormal
   - NextLevel
+  - AirJump
   layers:
   - Default
   - TransparentFX

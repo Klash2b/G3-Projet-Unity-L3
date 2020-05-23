@@ -42,7 +42,7 @@ public class HealthScript : MonoBehaviour
 
             //Si le joueur a au moins ramassé un objet checkpoint
             if (gameObject.tag == "Player" 
-            && !LastCheckpoint.getLastCheckpoint().Equals(new Vector3(-Mathf.Infinity, -Mathf.Infinity, -Mathf.Infinity))
+            && !CheckpointScript.getLastCheckpoint().Equals(new Vector3(-Mathf.Infinity, -Mathf.Infinity, -Mathf.Infinity))
             && !isRespawning)
             //On vérifie aussi que le joueur n'est pas en attente de réapparition
             {
@@ -52,12 +52,13 @@ public class HealthScript : MonoBehaviour
                 /*On ne sait pas quel script de mouvement est actuellement activé, donc on 
                 va vérifier quel script est activé, le désactiver, et appeler la coroutine
                 en mettant ce script en paramètre pour le réactiver après réapparition du joueur*/
-                if (gameObject.GetComponent<PlayerScript>().enabled)
+                if (gameObject.GetComponent<PlayerScript>() && gameObject.GetComponent<PlayerScript>().enabled)
+                //On vérifie que le script est rattaché au joueur, puis qu'il est activé
                 {
                     gameObject.GetComponent<PlayerScript>().enabled = false;
                     StartCoroutine(Respawn(gameObject.GetComponent<PlayerScript>()));
                 }
-                if (gameObject.GetComponent<PlayerScript2>().enabled)
+                if (gameObject.GetComponent<PlayerScript2>() && gameObject.GetComponent<PlayerScript2>().enabled)
                 {
                     gameObject.GetComponent<PlayerScript2>().enabled = false;
                     StartCoroutine(Respawn( gameObject.GetComponent<PlayerScript2>()));
@@ -91,13 +92,28 @@ public class HealthScript : MonoBehaviour
                 if (!col.gameObject.GetComponent<Animator>().GetBool("isDying"))
                 {
                     damage(2);
-                    Vector2 knockBack = col.gameObject.GetComponent<Rigidbody2D>().velocity;
-                    if (col.gameObject.tag == "FlyingEnemy")
+                    Vector2 knockBack = new Vector2(0,0);
+
+                    //Si le joueur est immobile, le knockback se fait dans la direction opposée au mouvement de l'ennemi
+                    if (gameObject.GetComponent<Rigidbody2D>().velocity == Vector2.zero)
                     {
-                        knockBack = 0.5f*knockBack;
+                        knockBack.x = -20f*Mathf.Sign(col.gameObject.GetComponent<Rigidbody2D>().velocity.x);
                     }
-                    GetComponent<Rigidbody2D>().velocity = -2f*knockBack;
-                    GetComponent<Rigidbody2D>().AddForce(-1f*knockBack);
+                    //Sinon, il se fait dans la direction opposée au mouvement du joueur
+                    else
+                    {
+                        knockBack.x = -20f*Mathf.Sign(gameObject.GetComponent<Rigidbody2D>().velocity.x);
+                    }
+                    if(col.gameObject.tag == "FlyingEnemy")
+                    {
+                        knockBack.y = -20f*Mathf.Sign(gameObject.GetComponent<Rigidbody2D>().velocity.y);
+                    }
+                    else
+                    {
+                        knockBack.y = 20f;
+                    }
+                    GetComponent<Rigidbody2D>().velocity = knockBack;
+                    GetComponent<Rigidbody2D>().AddForce(knockBack);
                     col.gameObject.GetComponent<HealthScript>().damage(col.gameObject.GetComponent<HealthScript>().hp);
                 }
                 
@@ -153,6 +169,6 @@ public class HealthScript : MonoBehaviour
         gameObject.GetComponent<Renderer>().enabled = true;
         p.enabled = true;
         isRespawning = false;
-        transform.position = LastCheckpoint.getLastCheckpoint();
+        transform.position = CheckpointScript.getLastCheckpoint();
     }
 }
