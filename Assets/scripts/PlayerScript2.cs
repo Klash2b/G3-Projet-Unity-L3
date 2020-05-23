@@ -160,7 +160,14 @@ public class PlayerScript2 : MonoBehaviour
       {
         anim.SetBool("isJumping", false);
       }
-    }
+    }  
+
+    // if (estAuSol && GetComponent<Rigidbody2D>().velocity.y<0)
+    // {
+    //   Vector2 v = GetComponent<Rigidbody2D>().velocity;
+    //   v.y = 0;
+    //   GetComponent<Rigidbody2D>().velocity = v;
+    // }
   }
 
   public float CalculSaut(float gravite, float hauteur)
