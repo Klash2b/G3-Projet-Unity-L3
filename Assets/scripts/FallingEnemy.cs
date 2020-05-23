@@ -15,6 +15,7 @@ public class FallingEnemy : MonoBehaviour
     private float startingY;
 
     private float pos;
+    private float scaleX;
 
     //Demi hauteur du boxcollider (distance entre le centre et le bas), nécessaire pour savoir si l'on peut sauter
     //(on y ajoute un Epsilon pour savoir si l'on est en contact avec le sol, car les Raycasts partent du centre du collider)
@@ -31,6 +32,7 @@ public class FallingEnemy : MonoBehaviour
         if (rigidbodyComponent == null) rigidbodyComponent = GetComponent<Rigidbody2D>(); 
         largeur = box.size.x;
         startingY = transform.position.y;
+        scaleX = transform.localScale.x;
         demiHauteur = box.bounds.extents.y;
         
         
@@ -75,7 +77,7 @@ public class FallingEnemy : MonoBehaviour
 
     public bool joueurDessous()
     {
-        RaycastHit2D hit = Physics2D.CircleCast(transform.position, largeur, -1f*Vector2.up);
+        RaycastHit2D hit = Physics2D.CircleCast(transform.position, scaleX*largeur+4.5f, -1f*Vector2.up);
         return hit.transform.tag == "Player";
     }
 
