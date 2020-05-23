@@ -146,5 +146,3 @@ MonoBehaviour:
   speed: 37
   maxSpeed: 75
   returnSpeed: 12
-  startingY: 0
-  pos: 0

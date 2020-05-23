@@ -20,7 +20,6 @@ public class FallingEnemy : MonoBehaviour
     //(on y ajoute un Epsilon pour savoir si l'on est en contact avec le sol, car les Raycasts partent du centre du collider)
     private float demiHauteur; 
     private bool active = false;
-    private bool auSol = false;
     private bool off = false;
 
     private float largeur;
@@ -41,14 +40,13 @@ public class FallingEnemy : MonoBehaviour
     void FixedUpdate()
     {
         pos = transform.position.y;
-        auSol = estSol();
         
 
-        if (!(active || auSol) && !off)
+        if (!(active || estSol()) && !off)
         {
             active = joueurDessous();
         }
-        else if (active && !(auSol || off))
+        else if (active && !(estSol() || off))
         {
 
             if (Mathf.Abs(rigidbodyComponent.velocity.y)<maxSpeed)
@@ -58,7 +56,7 @@ public class FallingEnemy : MonoBehaviour
         }
         
         
-        if (auSol || off)
+        if (estSol() || off)
         {
             off = true;
             if (pos < startingY)

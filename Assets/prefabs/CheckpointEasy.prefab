@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7105413649774866582}
   - component: {fileID: 7105413649774866583}
   - component: {fileID: 7105413649774866580}
-  - component: {fileID: 7105413649774866569}
+  - component: {fileID: 6605167573257834858}
   m_Layer: 0
   m_Name: CheckpointEasy
   m_TagString: CheckpointEasy
@@ -109,7 +109,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.9, y: 2.4}
   m_EdgeRadius: 0
---- !u!114 &7105413649774866569
+--- !u!114 &6605167573257834858
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

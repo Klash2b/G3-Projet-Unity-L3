@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LastCheckpoint : MonoBehaviour
+public class CheckpointScript : MonoBehaviour
 {
     private static Vector3 checkpoint = new Vector3(-Mathf.Infinity, -Mathf.Infinity, -Mathf.Infinity);
 
@@ -24,7 +24,7 @@ public class LastCheckpoint : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag=="Player")
+        if (col.gameObject.tag=="Player" && !col.gameObject.GetComponent<Animator>().GetBool("isDying"))
         {
             checkpoint = transform.position;
             Destroy(gameObject);
