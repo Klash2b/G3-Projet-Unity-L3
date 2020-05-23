@@ -24,7 +24,6 @@ public class PlayerScript : MonoBehaviour
   // 2 - Stockage du mouvement
   private Vector2 movement;
   private bool estAuSol;
-  private bool saute;
   private bool toucheSautEnfoncee;
   public Animator anim;
 
@@ -32,8 +31,6 @@ public class PlayerScript : MonoBehaviour
   //Demi hauteur du boxcollider (distance entre le centre et le bas), nécessaire pour savoir si l'on peut sauter
   //(on y ajoute un Epsilon pour savoir si l'on est en contact avec le sol, car les Raycasts partent du centre du collider)
   private float demiHauteur;
-
-    public GameObject Player;
 
  void Start()
  {
@@ -47,19 +44,19 @@ public class PlayerScript : MonoBehaviour
    scaleZ = transform.localScale.z;
  }
 
-    public void OnTriggerEnter2D(Collider2D other)
+    public void OnTriggerEnter2D(Collider2D col)
     {
-        if (other.gameObject.CompareTag("MovingPlatform"))
+        if (col.gameObject.CompareTag("MovingPlatform"))
         {
-            Player.transform.parent = other.gameObject.transform;
+            transform.parent = col.gameObject.transform;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D col)
     {
-        if (other.gameObject.CompareTag("MovingPlatform"))
+        if (col.gameObject.CompareTag("MovingPlatform"))
         {
-            Player.transform.parent = null;
+            transform.parent = null;
         }
     }
 
@@ -108,7 +105,6 @@ public class PlayerScript : MonoBehaviour
       toucheSautEnfoncee = true;
       if(estAuSol)
       {
-        saute = true;
         GetComponent<Rigidbody2D>().AddForce(Vector2.up * 1f * CalculSaut(gravite, hauteurSaut) * GetComponent<Rigidbody2D>().mass,
          ForceMode2D.Impulse);
       }
@@ -142,14 +138,10 @@ public class PlayerScript : MonoBehaviour
 
   void LateUpdate() //Saut en LateUpdate pour des raisons de problèmes de performance avec FixedUpdate
   {
-    if(saute)
-    {
-      
       if(!toucheSautEnfoncee && GetComponent<Rigidbody2D>().velocity.y>0)
       {
           GetComponent<Rigidbody2D>().AddForce(-1.5f * Vector2.up * CalculSaut(gravite, hauteurSaut) * GetComponent<Rigidbody2D>().mass);
       }
-    }
     if (toucheSautEnfoncee)
     {
       anim.SetBool("isJumping", true);
@@ -158,13 +150,6 @@ public class PlayerScript : MonoBehaviour
     {
       anim.SetBool("isJumping", false);
     }
-
-    // if (estAuSol && GetComponent<Rigidbody2D>().velocity.y<0)
-    // {
-    //   Vector2 v = GetComponent<Rigidbody2D>().velocity;
-    //   v.y = 0;
-    //   GetComponent<Rigidbody2D>().velocity = v;
-    // }
   }
 
   public float CalculSaut(float gravite, float hauteur)
@@ -172,9 +157,11 @@ public class PlayerScript : MonoBehaviour
     return Mathf.Sqrt(2 * gravite * hauteur);
   }
 
-  public bool estSol()
+  private bool estSol()
   {
-    return Physics2D.Raycast(transform.position, -1f*Vector2.up, demiHauteur+0.001f);
+    RaycastHit2D hit = Physics2D.Raycast(transform.position, -1f*Vector2.up, demiHauteur+0.001f);
+    return hit &&  (hit.transform.tag == "Platform" || hit.transform.tag == "MovingPlatform" ||
+                    hit.transform.tag == "Wall" || hit.transform.tag == "AirJump");
   }
 
     

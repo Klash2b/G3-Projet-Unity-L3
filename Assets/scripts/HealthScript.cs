@@ -52,12 +52,13 @@ public class HealthScript : MonoBehaviour
                 /*On ne sait pas quel script de mouvement est actuellement activé, donc on 
                 va vérifier quel script est activé, le désactiver, et appeler la coroutine
                 en mettant ce script en paramètre pour le réactiver après réapparition du joueur*/
-                if (gameObject.GetComponent<PlayerScript>().enabled)
+                if (gameObject.GetComponent<PlayerScript>() && gameObject.GetComponent<PlayerScript>().enabled)
+                //On vérifie que le script est rattaché au joueur, puis qu'il est activé
                 {
                     gameObject.GetComponent<PlayerScript>().enabled = false;
                     StartCoroutine(Respawn(gameObject.GetComponent<PlayerScript>()));
                 }
-                if (gameObject.GetComponent<PlayerScript2>().enabled)
+                if (gameObject.GetComponent<PlayerScript2>() && gameObject.GetComponent<PlayerScript2>().enabled)
                 {
                     gameObject.GetComponent<PlayerScript2>().enabled = false;
                     StartCoroutine(Respawn( gameObject.GetComponent<PlayerScript2>()));

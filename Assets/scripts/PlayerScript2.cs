@@ -21,7 +21,6 @@ public class PlayerScript2 : MonoBehaviour
   // 2 - Stockage du mouvement
   private Vector2 movement;
   private bool estAuSol;
-  private bool saute;
   private bool toucheSautEnfoncee;
   private bool doubleSaut = false;
   public Animator anim;
@@ -87,7 +86,6 @@ public class PlayerScript2 : MonoBehaviour
       if(estAuSol)
       {
         doubleSaut = true;
-        saute = true;
         GetComponent<Rigidbody2D>().AddForce(Vector2.up * 1f * CalculSaut(gravite, hauteurSaut) * GetComponent<Rigidbody2D>().mass,
          ForceMode2D.Impulse);
       }
@@ -107,7 +105,6 @@ public class PlayerScript2 : MonoBehaviour
             if(doubleSaut)
             {
                 doubleSaut = false;
-                saute = true;
                 Vector2 vect = new Vector2 (GetComponent<Rigidbody2D>().velocity.x, 0);
                 GetComponent<Rigidbody2D>().velocity = vect;
                 GetComponent<Rigidbody2D>().AddForce(Vector2.up * 1f * CalculSaut(gravite, hauteurSaut) * GetComponent<Rigidbody2D>().mass,
@@ -145,8 +142,6 @@ public class PlayerScript2 : MonoBehaviour
 
   void LateUpdate() //Saut en LateUpdate pour des raisons de problèmes de performance avec FixedUpdate
   {
-    if(saute)
-    {
       if(!toucheSautEnfoncee && GetComponent<Rigidbody2D>().velocity.y>0)
       {
           GetComponent<Rigidbody2D>().AddForce(-1.5f * Vector2.up * CalculSaut(gravite, hauteurSaut) * GetComponent<Rigidbody2D>().mass);
@@ -160,14 +155,22 @@ public class PlayerScript2 : MonoBehaviour
       {
         anim.SetBool("isJumping", false);
       }
-    }  
+  }
 
-    // if (estAuSol && GetComponent<Rigidbody2D>().velocity.y<0)
-    // {
-    //   Vector2 v = GetComponent<Rigidbody2D>().velocity;
-    //   v.y = 0;
-    //   GetComponent<Rigidbody2D>().velocity = v;
-    // }
+  public void OnTriggerEnter2D(Collider2D col)
+  {
+      if (col.gameObject.CompareTag("MovingPlatform"))
+      {
+        transform.parent = col.gameObject.transform;
+      }
+  }
+
+  private void OnTriggerExit2D(Collider2D col)
+  {
+      if (col.gameObject.CompareTag("MovingPlatform"))
+      {
+          transform.parent = null;
+      }
   }
 
   public float CalculSaut(float gravite, float hauteur)
@@ -175,8 +178,10 @@ public class PlayerScript2 : MonoBehaviour
     return Mathf.Sqrt(2 * gravite * hauteur);
   }
 
-  public bool estSol()
+  private bool estSol()
   {
-    return Physics2D.Raycast(transform.position, -1f*Vector2.up, demiHauteur+0.001f);
+    RaycastHit2D hit = Physics2D.Raycast(transform.position, -1f*Vector2.up, demiHauteur+0.001f);
+    return hit &&  (hit.transform.tag == "Platform" || hit.transform.tag == "MovingPlatform" ||
+                    hit.transform.tag == "Wall" || hit.transform.tag == "AirJump");
   }
 }
