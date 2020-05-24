@@ -37,6 +37,7 @@ public class AttackScript : MonoBehaviour
           tempsAttaque = dureeAttaque;
           anim.SetBool("isAttacking", true);
           playerWeapon.gameObject.SetActive(true);
+          SoundEffectsHelper.Instance.MakePlayerAttackSound();
       }
     } 
     

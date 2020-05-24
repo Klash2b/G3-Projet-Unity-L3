@@ -9,18 +9,21 @@ public class CollectCoin : MonoBehaviour
 
     void Start()
     {
-        txt.text = "PIECES : " + Collected.collected.ToString();
+        txt.text = "PIECES : " + Collected.getCollected().ToString();
+    }
+
+    void Update()
+    {
+        txt.text = "PIECES : " + Collected.getCollected().ToString();
     }
 
     void OnTriggerEnter2D (Collider2D otherCollider)
     {
         if (otherCollider.tag == "Coin")
         {
-            Collected.collected++;
+            Collected.setCollected(Collected.getCollected()+1);
             Destroy(otherCollider.gameObject);
         }
-
-        txt.text = "PIECES : " + Collected.collected.ToString();
     }
 }
 

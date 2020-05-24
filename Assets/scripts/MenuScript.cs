@@ -15,6 +15,7 @@ public class MenuScript : MonoBehaviour
         // "Stage1" is the name of the first scene we created.
         //Application.LoadLevel("Stage1");
         SceneManager.LoadScene("Level1");
+        Collected.setCollected(0);
     }
 
     public void easy()

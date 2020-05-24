@@ -12,6 +12,9 @@ public class NextLevel : MonoBehaviour
         }
         if(col.tag == "Finish")
         {
+            //On remet les checkpoints ramassés à zéro pour pouvoir rejouer sans problèmes de respawn
+            CheckpointScript.setLastCheckpoint(new Vector3(-Mathf.Infinity, -Mathf.Infinity, -Mathf.Infinity));
+            
             Application.LoadLevel("Menu");
         }
     }

@@ -35,6 +35,10 @@ public class HealthScript : MonoBehaviour
     public void damage(int damageCount)
     {
         hp -= damageCount;
+        if (gameObject.tag == "Player" && !(isRespawning ||anim.GetBool("isDying")))
+        {
+            SoundEffectsHelper.Instance.MakePlayerDamageSound();
+        }
 
         if (hp <= 0)
         {
@@ -70,6 +74,10 @@ public class HealthScript : MonoBehaviour
                 if (!(gameObject.tag == "Player" && isRespawning))
                 {
                     anim.SetBool("isDying", true);
+                    if (gameObject.tag == "Player")
+                    {
+                        Collected.setCollected(0);
+                    }
                     Destroy(gameObject, dieTime);
                 }
             }
@@ -159,6 +167,21 @@ public class HealthScript : MonoBehaviour
         anim.SetBool("isDying", true);
         yield return new WaitForSeconds(dieTime);
         gameObject.GetComponent<Renderer>().enabled = false;
+
+        //Le joueur perd des pièces en fonction de la difficulté lorsqu'il meurt
+        if (MenuScript.getDifficulty() == "easy")
+        {
+            Collected.setCollected(Collected.getCollected()-2);
+        }
+        else if (MenuScript.getDifficulty() == "normal")
+        {
+            Collected.setCollected(Collected.getCollected()-3);
+        }
+        else 
+        {
+            Collected.setCollected(Collected.getCollected()-5);
+        }
+
         anim.SetBool("isDying", false);
         yield return new WaitForSeconds(1.5f);
 

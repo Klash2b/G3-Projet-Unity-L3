@@ -80,6 +80,7 @@ public class PlayerScript2 : MonoBehaviour
         doubleSaut = true;
         GetComponent<Rigidbody2D>().AddForce(Vector2.up * 1f * CalculSaut(gravite, hauteurSaut) * GetComponent<Rigidbody2D>().mass,
          ForceMode2D.Impulse);
+         SoundEffectsHelper.Instance.MakePlayerJumpSound();
       }
     }
     else if (Input.GetButtonUp("Jump"))
@@ -101,6 +102,7 @@ public class PlayerScript2 : MonoBehaviour
                 GetComponent<Rigidbody2D>().velocity = vect;
                 GetComponent<Rigidbody2D>().AddForce(Vector2.up * 1f * CalculSaut(gravite, hauteurSaut) * GetComponent<Rigidbody2D>().mass,
                 ForceMode2D.Impulse);
+                SoundEffectsHelper.Instance.MakePlayerJumpSound();
             }
         }
         else if (Input.GetButtonUp("Jump"))

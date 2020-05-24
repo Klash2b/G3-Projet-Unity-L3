@@ -85,6 +85,7 @@ public class FlyingEnemyScript : MonoBehaviour
             {
                 Vector3 direction = cam.transform.position - transform.position;
                 weapon.Attack(direction);
+                SoundEffectsHelper.Instance.MakeShotSound();
             }
             
         }

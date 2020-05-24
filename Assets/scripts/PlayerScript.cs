@@ -99,6 +99,7 @@ public class PlayerScript : MonoBehaviour
       {
         GetComponent<Rigidbody2D>().AddForce(Vector2.up * 1f * CalculSaut(gravite, hauteurSaut) * GetComponent<Rigidbody2D>().mass,
          ForceMode2D.Impulse);
+        SoundEffectsHelper.Instance.MakePlayerJumpSound();
       }
     }
     else if (Input.GetButtonUp("Jump"))

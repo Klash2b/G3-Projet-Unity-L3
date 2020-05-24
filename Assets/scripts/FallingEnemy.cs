@@ -48,6 +48,10 @@ public class FallingEnemy : MonoBehaviour
         if (!(active || estAuSol() || off))
         {
             active = joueurDessous();
+            if (active)
+            {
+                SoundEffectsHelper.Instance.MakeFallingEnemySound();
+            }
         }
         else if (active && !off)
         {
