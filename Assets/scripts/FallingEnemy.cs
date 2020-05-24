@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class FallingEnemy : MonoBehaviour
@@ -44,11 +45,11 @@ public class FallingEnemy : MonoBehaviour
         pos = transform.position.y;
         
 
-        if (!(active || estSol()) && !off)
+        if (!(active || estAuSol() || off))
         {
             active = joueurDessous();
         }
-        else if (active && !(estSol() || off))
+        else if (active && !off)
         {
 
             if (Mathf.Abs(rigidbodyComponent.velocity.y)<maxSpeed)
@@ -56,11 +57,16 @@ public class FallingEnemy : MonoBehaviour
                 rigidbodyComponent.AddForce(new Vector2(0, -speed));
             }
         }
-        
-        
-        if (estSol() || off)
+
+        if (estAuSol())
         {
             off = true;
+        }
+        
+
+        
+        if (off)
+        {
             if (pos < startingY)
             {
                 rigidbodyComponent.velocity = new Vector2 (0, returnSpeed);
@@ -77,11 +83,21 @@ public class FallingEnemy : MonoBehaviour
 
     public bool joueurDessous()
     {
-        RaycastHit2D hit = Physics2D.CircleCast(transform.position, scaleX*largeur+4.5f, -1f*Vector2.up);
-        return hit.transform.tag == "Player";
+
+        /*On fait partir le raycast de plus haut que la position de l'ennemi, car sinon, lorsque le joueur se
+        situe à une altitude proche de l'ennemi, la détection ne fonctionne pas bien car le raycast part parfois
+        plus bas que le joueur.
+        On est donc obligé de faire un RaycastAll car le raycast part du dessus de l'ennemi, et peut 
+        rencontrer d'autres objets que le joueur en chemin, et ceux-ci l'arrêteraient autrement*/
+        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position + new Vector3(0,15f,0),
+        scaleX*largeur+7.5f, -1f*Vector2.up);
+        
+        /*On vérifie d'abord que le tableau des objets touchés par le raycast ne vaut pas null pour
+        ne pas tester sur un tableau vide, puis on vérifie que le joueur fait partie des objets touchés*/
+        return hit != null && Array.Exists(hit, element => element.transform.tag == "Player");
     }
 
-    public bool estSol()
+    public bool estAuSol()
     {
         return Physics2D.Raycast(transform.position, -1f*Vector2.up, demiHauteur+0.1f);
     }

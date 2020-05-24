@@ -20,7 +20,6 @@ public class PlayerScript2 : MonoBehaviour
 
   // 2 - Stockage du mouvement
   private Vector2 movement;
-  private bool estAuSol;
   private bool toucheSautEnfoncee;
   private bool doubleSaut = false;
   public Animator anim;
@@ -36,7 +35,6 @@ public class PlayerScript2 : MonoBehaviour
  void Start()
  {
    demiHauteur = GetComponent<BoxCollider2D>().bounds.extents.y;
-   estAuSol = false;
    gravite = Physics2D.gravity.magnitude;
    scaleX = transform.localScale.x;
    scaleY = transform.localScale.y;
@@ -53,13 +51,7 @@ public class PlayerScript2 : MonoBehaviour
 
     // 4 - Calcul du mouvement et de la direction du sprite
     movement = new Vector2(vitesse.x * inputX, vitesse.y * inputY);
-
     
-
-    estAuSol = estSol();
-
-    
-
     if (inputX > 0)
     {
        transform.localScale = new Vector3(Mathf.Abs(scaleX),
@@ -83,7 +75,7 @@ public class PlayerScript2 : MonoBehaviour
     if(Input.GetButtonDown("Jump"))
     {
       toucheSautEnfoncee = true;
-      if(estAuSol)
+      if(estAuSol())
       {
         doubleSaut = true;
         GetComponent<Rigidbody2D>().AddForce(Vector2.up * 1f * CalculSaut(gravite, hauteurSaut) * GetComponent<Rigidbody2D>().mass,
@@ -97,7 +89,7 @@ public class PlayerScript2 : MonoBehaviour
 
 
     //Gestion du deuxième saut si le joueur est d"éjà en l'air
-    if (!estAuSol)
+    if (!estAuSol())
     {
         if(Input.GetButtonDown("Jump"))
         {
@@ -150,7 +142,7 @@ public class PlayerScript2 : MonoBehaviour
       {
         anim.SetBool("isJumping", true);
       }
-      else if (!toucheSautEnfoncee && (estAuSol && GetComponent<Rigidbody2D>().velocity.y<=0 
+      else if (!toucheSautEnfoncee && (estAuSol() && GetComponent<Rigidbody2D>().velocity.y<=0 
                                         || (doubleSaut && GetComponent<Rigidbody2D>().velocity.y<=-10)))
       {
         anim.SetBool("isJumping", false);
@@ -178,7 +170,7 @@ public class PlayerScript2 : MonoBehaviour
     return Mathf.Sqrt(2 * gravite * hauteur);
   }
 
-  private bool estSol()
+  private bool estAuSol()
   {
     RaycastHit2D hit = Physics2D.Raycast(transform.position, -1f*Vector2.up, demiHauteur+0.001f);
     return hit &&  (hit.transform.tag == "Platform" || hit.transform.tag == "MovingPlatform" ||

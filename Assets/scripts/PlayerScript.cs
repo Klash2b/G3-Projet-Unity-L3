@@ -23,7 +23,6 @@ public class PlayerScript : MonoBehaviour
 
   // 2 - Stockage du mouvement
   private Vector2 movement;
-  private bool estAuSol;
   private bool toucheSautEnfoncee;
   public Animator anim;
 
@@ -36,7 +35,6 @@ public class PlayerScript : MonoBehaviour
  {
    gameObject.GetComponent<PlayerScript2>().enabled = false;
    demiHauteur = GetComponent<BoxCollider2D>().bounds.extents.y;
-   estAuSol = false;
    gravite = Physics2D.gravity.magnitude;
    
    scaleX = transform.localScale.x;
@@ -71,12 +69,6 @@ public class PlayerScript : MonoBehaviour
     // 4 - Calcul du mouvement et de la direction du sprite
     movement = new Vector2(vitesse.x * inputX, vitesse.y * inputY);
 
-    
-
-    estAuSol = estSol();
-
-    
-
     if (inputX > 0)
     {
        transform.localScale = new Vector3(Mathf.Abs(scaleX),
@@ -103,7 +95,7 @@ public class PlayerScript : MonoBehaviour
     if(Input.GetButtonDown("Jump"))
     {
       toucheSautEnfoncee = true;
-      if(estAuSol)
+      if(estAuSol())
       {
         GetComponent<Rigidbody2D>().AddForce(Vector2.up * 1f * CalculSaut(gravite, hauteurSaut) * GetComponent<Rigidbody2D>().mass,
          ForceMode2D.Impulse);
@@ -146,7 +138,7 @@ public class PlayerScript : MonoBehaviour
     {
       anim.SetBool("isJumping", true);
     }
-    else if (!toucheSautEnfoncee && estAuSol)
+    else if (!toucheSautEnfoncee && estAuSol())
     {
       anim.SetBool("isJumping", false);
     }
@@ -157,7 +149,7 @@ public class PlayerScript : MonoBehaviour
     return Mathf.Sqrt(2 * gravite * hauteur);
   }
 
-  private bool estSol()
+  private bool estAuSol()
   {
     RaycastHit2D hit = Physics2D.Raycast(transform.position, -1f*Vector2.up, demiHauteur+0.001f);
     return hit &&  (hit.transform.tag == "Platform" || hit.transform.tag == "MovingPlatform" ||
